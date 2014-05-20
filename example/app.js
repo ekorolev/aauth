@@ -17,7 +17,13 @@ app.use( session({ secret: 'okokdada' }) );
 
 aauth({
 	app: app,
-	mongoose: mongoose
+	mongoose: mongoose,
+	social: {
+		twitter: {
+			key: "hc2xAWeIIhxhI23VlfS1ql6B3",
+			secret: "S4hxp7et3bv1urFRWKsszjOnooT6RSxhJOk4vTTsqUUjpy2ygq"
+		}
+	}
 });
 
 app.get('/', function (req, res) {

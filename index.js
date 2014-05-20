@@ -30,7 +30,10 @@ module.exports = function ( options ) {
 	app.use( middleware );
 
 	// Готовим логику модуля для работы
-	var auth = require('./lib/auth')(Users);
+	var auth = require('./lib/auth')({
+		Users: Users,
+		social: options.social || {}
+	});
 
 	/*
 		Обработчик запроса.
@@ -45,8 +48,8 @@ module.exports = function ( options ) {
 					res.send({error: e});
 				} else if ( r.redirect ) {
 					res.redirect( r.redirect );
-				} else if ( r.data ) {
-					res.send( r.data );
+				} else {
+					res.redirect('/');
 				}
 			});
 		}
