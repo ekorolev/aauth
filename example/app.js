@@ -30,4 +30,8 @@ app.get('/', function (req, res) {
 	res.render('index');
 });
 
+app.aget('/aget', function (req, res) {
+	res.send('Вы авторизованы, а следовательно можете посещать эту страницу (c) Админ');
+})
+
 app.listen(9091);

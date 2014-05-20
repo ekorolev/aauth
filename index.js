@@ -25,6 +25,23 @@ module.exports = function ( options ) {
 	// Готовим модель пользователя для нашего модуля.
 	var Users = require('./lib/model')(mongoose, userSchema);
 
+	// Переопределяем функции app.get, app.post, app.all
+	app.aget = function (route, callback, roles) {
+		app.get(route, function (req, res) {
+			check(req, res, callback, roles);
+		})
+	}
+	app.apost = function ( route, callback, roles ) {
+		app.post(route, function (req, res) {
+			check(req, res, callback, roles);
+		})
+	}
+	app.aall = function ( route, callback, roles ) {
+		app.all( route, function (req, res) {
+			check( req, res, callback, roles );
+		})
+	}
+
 	// Настраиваем приложения, устанавливаем пути модуля и прослойки модуля.
 	app.all('/auth/:type', hundler);
 	app.use( middleware );
@@ -69,4 +86,33 @@ module.exports = function ( options ) {
 		next();
 	}
 
+	return {
+		auth: auth,
+		middleware: middleware
+	}
+
+	// Функция проверки доступа к роутам.
+	function check ( req, res, callback, roles ) {
+		var a = req.session.auth;
+		var u = req.session.user;
+
+		var no = function () {
+			res.send('Доступ закрыт');
+		}
+		var yes = function () {
+			callback( req, res ); 
+		}
+
+		// Если список ролей не указан, значит просто проверяем, авторизована ли сессия
+		if ( !roles ) {
+			if (a) yes(); else no();
+		} else {
+			// Если роль пользователя входит в массив допустимых ролей - пустим его.
+			if ( roles.indexOf( user.role )+1 ) {
+				yes();
+			} else {
+				no();
+			}
+		}
+	}
 }
