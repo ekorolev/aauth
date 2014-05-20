@@ -17,60 +17,26 @@
 */
 
 module.exports = function ( options ) {
+	// Разбираем присланные данные по переменным.
 	var app = options.app;
-	var Users = options.model;
+	var mongoose = options.mongoose;
+	var userSchema = options.userSchema;
 
+	// Готовим модель пользователя для нашего модуля.
+	var Users = require('./lib/model')(mongoose, userSchema);
+
+	// Настраиваем приложения, устанавливаем пути модуля и прослойки модуля.
 	app.all('/auth/:type', hundler);
 	app.use( middleware );
 
-	var auth = {
-		reg: function (req, cb) {
-			var data = req.body;
-			var user = new Users(req.body);
-			user.save( function (e, user) {
-				if (e) cb(e); else {
-					cb(null, {
-						data: "Пользователь зарегистрирован!"
-					})
-				}
-			})
-		},
+	// Готовим логику модуля для работы
+	var auth = require('./lib/auth')(Users);
 
-		password: function (req, cb) {
-			var login = req.body.login;
-			var password = req.body.password;
-			var error = new Error('Неверный логин или пароль');
-
-			Users.findOne({ login: login }, function (e, user) {
-				if (e) cb(e); else {
-					if (!user) { cb(error); } else {
-						user.comparePassword( password, function (e, isMatch) {
-							if (e) cb(e); else {
-								if (!isMatch) {
-									cb(error);
-								} else {
-									req.session.auth = true;
-									req.session.user = user;
-									cb(null, {
-										data: "Пользователь авторизован"
-									})
-								}
-							}
-						})
-					}
-				}
-			});
-		},
-
-		logout: function (req, cb) {
-			req.session.user = false;
-			req.session.auth = false;
-			cb(null, {
-				data: "Пользователь вышел"
-			})
-		}
-	}
-
+	/*
+		Обработчик запроса.
+			- Получает запрос, определяет тип, передает соответственно типу в 
+			дальнейшую обработку. Результат переваривает и отдает пользователю.
+	*/
 	function hundler ( req, res ) {
 		var type = req.params.type;
 		if ( auth[type] ) {
@@ -86,6 +52,10 @@ module.exports = function ( options ) {
 		}
 	}
 
+	/*
+		Прослойка.
+			- Передача необходимых данных в локальное представление.
+	*/
 	function middleware(req, res, next) {
 		if ( req.session.auth ) {
 			res.locals.auth = true;

@@ -6,13 +6,6 @@ var bodyParser = require('body-parser');
 var ejs = require('ejs-locals');
 var mongoose = require('mongoose').connect('mongodb://localhost/aauth');
 
-/* Модель пользователя */
-var users = mongoose.model('users', mongoose.Schema({
-	login: String,
-	password: String,
-	email: String
-}));
-
 var app = express ();
 
 app.engine('ejs', ejs);
@@ -24,11 +17,11 @@ app.use( session({ secret: 'okokdada' }) );
 
 aauth({
 	app: app,
-	model: users
+	mongoose: mongoose
 });
 
 app.get('/', function (req, res) {
 	res.render('index');
-})
+});
 
 app.listen(9091);
