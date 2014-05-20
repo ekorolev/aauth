@@ -1,0 +1,11 @@
+{
+  "name": "example",
+  "dependencies": {
+    "ejs-locals": "~1.0.2",
+    "body-parser": "~1.2.0",
+    "cookie-parser": "~1.1.0",
+    "express-session": "~1.2.0",
+    "mongoose": "~3.8.9",
+    "express": "~4.0.0"
+  }
+}

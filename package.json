@@ -1,0 +1,25 @@
+{
+  "name": "aauth",
+  "version": "0.0.1",
+  "description": "Модуль для быстрой установки авторизации и регистрации на сайте",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kilmarnok/aauth.git"
+  },
+  "keywords": [
+    "auth",
+    "nodejs",
+    "js"
+  ],
+  "author": "kilmarnok",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/kilmarnok/aauth/issues"
+  }
+}
