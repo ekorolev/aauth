@@ -33,3 +33,9 @@
 	app.listen(80);
 
 ###Роуты###
+
+	POST /auth/reg Регистрация. Передаем параметры login и password, получаем либо регистрацию, либо ошибку.
+
+	POST /auth/password Вход. Передаем параметры login и password, получаем либо авторизацию, либо ошибку.
+
+	GET /auth/twitter Авторизация через twitter
