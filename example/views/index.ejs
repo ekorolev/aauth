@@ -18,14 +18,15 @@
 					<br>
 					Но вы можете зарегистрироваться: 
 					<form action='/auth/reg' method='post'>
-						<input type='text' name='login'>
+						<input type='text' name='login' placeholder='login'>
+						<input type='email' name='email' placeholder='email'>
 						<input type='password' name='password'>
 						<input type='submit'>
 					</form>
 					<hr>
 					Ну или Login:
 					<form action='/auth/password' method='post'>
-						<input type='text' name='login'>
+						<input type='text' name='login' placeholder='email или login'>
 						<input type='password' name='password'>
 						<input type='submit'>
 					</form>
